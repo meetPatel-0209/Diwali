@@ -16,7 +16,8 @@ canvas#fx{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events
 main,header,footer{position:relative;z-index:1}
 a{color:inherit}
 :focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:6px}
-nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:.7rem clamp(1rem,4vw,3rem);background:rgba(16,9,31,.82);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:30}
+nav{position:relative;display:flex;align-items:center;justify-content:space-between;padding:.7rem clamp(1rem,4vw,3rem);background:rgba(16,9,31,.82);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 .logo{font:700 1.4rem var(--serif);color:var(--gold);text-decoration:none}
 nav ul{list-style:none;display:flex;gap:1.6rem;padding:0}
 nav ul a{text-decoration:none;padding:.4rem 0;opacity:.9}
@@ -100,6 +101,8 @@ dialog p{font:500 1.5rem/1.4 var(--serif);margin:1rem 0 1.5rem}
 nav ul{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;background:var(--navy);border-bottom:1px solid var(--line)}
 nav ul.open{display:flex}
 nav ul a{display:block;padding:.9rem 1.5rem}}
+@media(hover:none){#stage{transform:none;transform-style:flat}.card{transform:none;transform-style:flat}.card>*{transform:none}}
+nav a,#menuBtn{touch-action:manipulation;-webkit-tap-highlight-color:rgba(255,215,106,.3)}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.rv{opacity:1;transform:none}.rangoli *{stroke-dashoffset:0}}
 </style>
 </head>
@@ -263,7 +266,8 @@ if($('waWish'))$('waWish').onclick=function(){wa(msg+(shareURL?'\n'+shareURL:'')
 /* nav */
 var mb=$('menuBtn'),menu=$('menu');
 mb.onclick=function(){var o=menu.classList.toggle('open');mb.setAttribute('aria-expanded',o)};
-menu.addEventListener('click',function(e){if(e.target.tagName==='A'){menu.classList.remove('open');mb.setAttribute('aria-expanded',false)}});
+menu.addEventListener('click',function(e){var a=e.target.closest('a');if(!a)return;e.preventDefault();menu.classList.remove('open');mb.setAttribute('aria-expanded',false);var t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:reduce?'auto':'smooth'})});
+var lg=document.querySelector('.logo');if(lg)lg.addEventListener('click',function(e){e.preventDefault();scrollTo({top:0,behavior:reduce?'auto':'smooth'})});
 var top_=$('top');top_.onclick=function(){scrollTo({top:0,behavior:reduce?'auto':'smooth'})};
 addEventListener('scroll',function(){top_.style.display=scrollY>600?'block':'none'},{passive:true});
 
