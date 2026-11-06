@@ -9,7 +9,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#031418">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🪔</text></svg>">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Cinzel:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Cinzel:wght@500;700&family=Noto+Serif+Devanagari:wght@400;600&family=Noto+Serif+Gujarati:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--gold:#f6c860;--amber:#ff9a2e;--ivory:#fff4dc;--ink:#031418;box-sizing:border-box}
 *{box-sizing:border-box;margin:0}
@@ -41,6 +41,12 @@ p{font-size:clamp(19px,4.6vw,28px);line-height:1.5;max-width:640px;margin:10px 0
 #nm:focus{box-shadow:0 0 24px rgba(255,170,50,.5)}
 #nm::placeholder{color:rgba(255,244,220,.5)}
 @keyframes pl{0%,100%{opacity:.4}50%{opacity:1}}
+html[lang=hi] body,html[lang=gu] body,html[lang=hi] h1,html[lang=gu] h1,html[lang=hi] h2,html[lang=gu] h2,html[lang=hi] .b,html[lang=gu] .b,html[lang=hi] .sig,html[lang=gu] .sig,html[lang=hi] #nm,html[lang=gu] #nm{font-family:'Noto Serif Gujarati','Noto Serif Devanagari',serif!important}
+html[lang=hi] *,html[lang=gu] *{letter-spacing:0!important}
+html[lang=hi] h1,html[lang=gu] h1{line-height:1.3}
+#lang{position:fixed;top:max(10px,env(safe-area-inset-top,0px));left:0;right:0;display:flex;justify-content:center;gap:8px;z-index:9}
+#lang button{font:600 14px 'Noto Serif Gujarati','Noto Serif Devanagari',serif;color:var(--ivory);background:rgba(10,70,76,.65);border:1px solid rgba(246,200,96,.45);border-radius:30px;padding:9px 16px;min-height:40px;cursor:pointer}
+#lang button.on{background:rgba(246,200,96,.92);color:#12302f}
 #tap{position:fixed;left:0;right:0;bottom:max(24px,calc(env(safe-area-inset-bottom,0px) + 18px));text-align:center;z-index:6;color:var(--gold);font-size:clamp(17px,4.4vw,22px);letter-spacing:.05em;opacity:0;pointer-events:none;padding:0 16px;text-shadow:0 0 12px #000}
 #tap.on{animation:pl 1.8s ease-in-out infinite}
 #p-fin p{margin:8px auto}.card p{font-size:clamp(17px,4.2vw,24px);margin:8px auto}.card h2{font-size:clamp(20px,5vw,34px)}
@@ -62,6 +68,7 @@ h1,h2{background:linear-gradient(180deg,#fff0c2,#f6c860 55%,#c98a2b);-webkit-bac
 
 <button id="giftbtn" aria-label="Light this diya"></button>
 <div id="tap">🎆 Tap anywhere on the sky to burst fireworks</div>
+<div id="lang"><button data-l="gu">ગુજરાતી</button><button data-l="hi">हिन्दी</button><button data-l="en">English</button></div>
 
 <div class="panel on" id="p-intro" style="justify-content:space-between;padding:14vh 24px 11vh">
  <div><p class="sm" style="letter-spacing:.3em;text-transform:uppercase;font-size:14px;font-style:normal">A Diwali greeting from</p><h1>Meet Patel</h1></div>
@@ -76,6 +83,17 @@ h1,h2{background:linear-gradient(180deg,#fff0c2,#f6c860 55%,#c98a2b);-webkit-bac
 <div class="panel low" id="p-world">
  <p class="hint">Tap the sky for fireworks · move to look around</p>
  <button class="b" id="c2">Open My Wishes ✨</button>
+</div>
+<div class="panel" id="p-story">
+ <div class="card" style="text-align:center">
+  <h1>The Story of Diwali 🪔</h1>
+  <p>After 14 years in exile, Shri Ram, Sita Maa and Lakshman returned to Ayodhya.</p>
+  <p>On the darkest night of Amavasya, the people of Ayodhya lit rows of diyas to welcome them home.</p>
+  <p>That is why we light diyas even today — one small light that drives away the darkness.</p>
+  <h2>Jai Shri Ram 🙏</h2>
+  <p class="sm">The next day begins the Gujarati New Year — Saal Mubarak! 🎉</p>
+  <button class="b" id="c6">Continue ✨</button>
+ </div>
 </div>
 <div class="panel" id="p-wish">
  <div class="card">
@@ -269,7 +287,7 @@ function frame(ms){
  }
  // gift
  if(stage==='gift'){const r=Math.min(W,H)*.2;giftLit=L(giftLit,gl,.03);diya(W/2,H*.5,r,.5+.5*giftLit,t,hov);g.globalCompositeOperation='lighter';glow(W/2,H*.45,r*(3+giftLit*5),.25*giftLit);g.globalCompositeOperation='source-over'}
- if(myL){myL.t+=dt;myL.y-=dt*(myL.t<1.5?.02:.07);const s=Math.min(W,H)*.075,x=W/2+Math.sin(t)*8,y=myL.y*H;g.globalCompositeOperation='lighter';glow(x,y,s*5,.45,'255,190,80');g.globalCompositeOperation='source-over';const q=g.createLinearGradient(x,y-s,x,y+s);q.addColorStop(0,'#ffe08a');q.addColorStop(1,'#e8731c');g.fillStyle=q;g.beginPath();g.moveTo(x-s*.55,y-s*.8);g.quadraticCurveTo(x-s,y,x-s*.55,y+s*.9);g.lineTo(x+s*.55,y+s*.9);g.quadraticCurveTo(x+s,y,x+s*.55,y-s*.8);g.closePath();g.fill();g.fillStyle='#ffe7a8';g.shadowColor='#ff9a2e';g.shadowBlur=14;g.textAlign='center';g.font=`600 ${M?19:26}px Cinzel,serif`;g.fillText(myL.n,x,y+s*1.9);g.shadowBlur=0;g.textAlign='left';if(myL.y<-.15)myL=null}
+ if(myL){myL.t+=dt;myL.y-=dt*(myL.t<1.5?.02:.07);const s=Math.min(W,H)*.075,x=W/2+Math.sin(t)*8,y=myL.y*H;g.globalCompositeOperation='lighter';glow(x,y,s*5,.45,'255,190,80');g.globalCompositeOperation='source-over';const q=g.createLinearGradient(x,y-s,x,y+s);q.addColorStop(0,'#ffe08a');q.addColorStop(1,'#e8731c');g.fillStyle=q;g.beginPath();g.moveTo(x-s*.55,y-s*.8);g.quadraticCurveTo(x-s,y,x-s*.55,y+s*.9);g.lineTo(x+s*.55,y+s*.9);g.quadraticCurveTo(x+s,y,x+s*.55,y-s*.8);g.closePath();g.fill();g.fillStyle='#ffe7a8';g.shadowColor='#ff9a2e';g.shadowBlur=14;g.textAlign='center';g.font=`600 ${M?19:26}px Cinzel,'Noto Serif Gujarati','Noto Serif Devanagari',serif`;g.fillText(myL.n,x,y+s*1.9);g.shadowBlur=0;g.textAlign='left';if(myL.y<-.15)myL=null}
  // mandala + petals
  if(stage==='gift'||(stage==='finale'&&ft>7)){const a=stage==='gift'?.05+.12*giftLit:cl((ft-7)/2)*.17,rr=Math.min(W,H)*.36;g.save();g.translate(W/2,stage==='gift'?H*.5:H*.42);g.rotate(t*.05*pk);g.strokeStyle=`rgba(246,200,96,${a})`;g.lineWidth=1;for(let k=0;k<3;k++){const n=12+k*6,r0=rr*(.5+k*.25);for(let i=0;i<n;i++){g.rotate(6.283/n);g.beginPath();g.ellipse(r0*.5,0,r0*.5,r0*.17,0,0,6.3);g.stroke()}}g.restore()}
  if(world){frame.p=frame.p||[...Array(M?18:34)].map(()=>({x:Math.random(),y:Math.random(),s:R(4,9),v:R(.03,.07),p:R(0,6)}));frame.p.forEach(o=>{o.y+=o.v*dt*pk;if(o.y>1.05){o.y=-.05;o.x=Math.random()}g.save();g.translate((o.x+Math.sin(t*.7+o.p)*.03)*W,o.y*H);g.rotate(Math.sin(t+o.p)*1.2);g.fillStyle=o.p>3?'rgba(255,170,40,.75)':'rgba(255,215,100,.75)';g.beginPath();g.ellipse(0,0,o.s,o.s*.45,0,0,6.3);g.fill();g.restore()})}
@@ -295,15 +313,16 @@ function frame(ms){
 }
 let gl=0,hov=false,myL=null,uname='';
 // UI
-const ids=['p-intro','p-lit','p-world','p-wish','p-name','p-go','p-gift','p-fin'];
+const ids=['p-intro','p-lit','p-world','p-story','p-wish','p-name','p-go','p-gift','p-fin'];
 function show(id){ids.forEach(i=>$(i).classList.toggle('on',i===id))}
 function wipe(cb){const f=$('flash');f.classList.remove('go');void f.offsetWidth;f.classList.add('go');setTimeout(cb,900)}
 $('light').onclick=()=>{if(sparkT>=0)return;sparkT=0;show('none');ids.forEach(i=>$(i).classList.remove('on'))};
 $('c1').onclick=()=>wipe(()=>{stage='world';show('p-world');for(let i=0;i<3;i++)setTimeout(()=>launch(null,null,true),i*900)});
-$('c2').onclick=()=>{stage='wish';show('p-wish')};
+$('c2').onclick=()=>{stage='wish';show('p-story')};
+$('c6').onclick=()=>show('p-wish');
 $('c3').onclick=()=>{stage='name';show('p-name')};
 $('nm').onkeydown=e=>{if(e.key==='Enter')$('c5').click()};
-$('c5').onclick=()=>{if(myL)return;uname=($('nm').value||'').trim().slice(0,18);myL={y:.72,t:0,n:uname||'Happy Diwali'};$('who').textContent=uname?'With love, for '+uname+' 💛':'';bell();[0,500,1000,1500].forEach((d,i)=>setTimeout(()=>launch(W*(.22+.19*i),H*R(.15,.35)),d));show('p-go');setTimeout(()=>{stage='gift';show('p-gift');$('giftbtn').classList.add('on')},4500)};
+$('c5').onclick=()=>{if(myL)return;uname=($('nm').value||'').trim().slice(0,18);myL={y:.72,t:0,n:uname||MAP['HAPPY DIWALI'][LI()]};$('who').textContent=whoText();bell();[0,500,1000,1500].forEach((d,i)=>setTimeout(()=>launch(W*(.22+.19*i),H*R(.15,.35)),d));show('p-go');setTimeout(()=>{stage='gift';show('p-gift');$('giftbtn').classList.add('on')},4500)};
 const gb=$('giftbtn');
 gb.onclick=()=>{if(gl)return;gl=1;$('ghint').style.display='none';bell();for(let i=0;i<30;i++)sparks.push({x:W/2,y:H*.4,vx:R(-2,2),vy:R(-3,0),l:1,dk:.012,c:'#ffd27a'});$('gmsg').style.opacity=1;$('c4').style.pointerEvents='auto'};
 gb.onpointerenter=()=>hov=true;gb.onpointerleave=()=>hov=false;
@@ -312,6 +331,63 @@ $('replay').onclick=()=>{ids.forEach(i=>$(i).classList.remove('on'));stage='intr
 const shr=$('share');if(shr)shr.onclick=async()=>{const d={title:'Happy Diwali 🪔',text:'🪔 Happy Diwali! Sending you light, happiness and good wishes. — Meet Patel',url:location.href};
  try{if(navigator.share){await navigator.share(d);return}}catch(e){if(e&&e.name==='AbortError')return}
  try{await navigator.clipboard.writeText(location.href);$('shmsg').textContent='✨ Link copied!'}catch(e){const i=document.createElement('input');i.value=location.href;document.body.appendChild(i);i.select();try{document.execCommand('copy');$('shmsg').textContent='✨ Link copied!'}catch(_){$('shmsg').textContent=location.href}i.remove()}};
-addEventListener('resize',rs);rs();requestAnimationFrame(frame);
+// ---- language (Gujarati / Hindi / English)
+const TR=[
+['A Diwali greeting from','दिवाली की शुभकामनाओं के साथ','દિવાળીની શુભેચ્છાઓ સાથે'],
+['Meet Patel','मीत पटेल','મીત પટેલ'],
+['Something beautiful is about to light up...','कुछ सुंदर रोशन होने वाला है...','કંઈક સુંદર પ્રકાશિત થવાનું છે...'],
+['Light the Diya 🪔','दीया जलाएँ 🪔','દીવો પ્રગટાવો 🪔'],
+['A little light can make everything brighter.','एक छोटी-सी रोशनी सब कुछ रोशन कर देती है।','એક નાનકડો પ્રકાશ બધું ઉજ્જવળ બનાવી દે છે.'],
+['Welcome to my Diwali celebration.','मेरी दिवाली के उत्सव में आपका स्वागत है।','મારી દિવાળીની ઉજવણીમાં આપનું સ્વાગત છે.'],
+['— Meet Patel','— मीत पटेल','— મીત પટેલ'],
+['Continue ✨','आगे बढ़ें ✨','આગળ વધો ✨'],
+['Tap the sky for fireworks · move to look around','आतिशबाज़ी के लिए आसमान पर टैप करें · चारों ओर देखें','આતશબાજી માટે આકાશ પર ટેપ કરો · આસપાસ જુઓ'],
+['Open My Wishes ✨','मेरी शुभकामनाएँ खोलें ✨','મારી શુભેચ્છાઓ ખોલો ✨'],
+['The Story of Diwali 🪔','दिवाली की कहानी 🪔','દિવાળીની વાર્તા 🪔'],
+['After 14 years in exile, Shri Ram, Sita Maa and Lakshman returned to Ayodhya.','14 वर्ष के वनवास के बाद श्रीराम, माता सीता और लक्ष्मण अयोध्या लौटे।','૧૪ વર્ષના વનવાસ પછી શ્રી રામ, માતા સીતા અને લક્ષ્મણ અયોધ્યા પાછા ફર્યા.'],
+['On the darkest night of Amavasya, the people of Ayodhya lit rows of diyas to welcome them home.','अमावस्या की सबसे अँधेरी रात में अयोध्यावासियों ने उनके स्वागत में दीपों की कतारें जलाईं।','અમાસની સૌથી અંધારી રાત્રે અયોધ્યાવાસીઓએ તેમના સ્વાગતમાં દીવાઓની હારમાળા પ્રગટાવી.'],
+['That is why we light diyas even today — one small light that drives away the darkness.','इसीलिए हम आज भी दीप जलाते हैं — एक छोटी-सी ज्योति, जो अँधेरा मिटा देती है।','એટલે જ આજે પણ આપણે દીવા પ્રગટાવીએ છીએ — એક નાનો દીવો, જે અંધકાર દૂર કરે છે.'],
+['Jai Shri Ram 🙏','जय श्रीराम 🙏','જય શ્રી રામ 🙏'],
+['The next day begins the Gujarati New Year — Saal Mubarak! 🎉','अगले दिन गुजराती नववर्ष शुरू होता है — साल मुबारक! 🎉','બીજા દિવસે નવું વર્ષ શરૂ થાય છે — સાલ મુબારક! 🎉'],
+['Happy Diwali','शुभ दीपावली','શુભ દિવાળી'],
+['From my heart to yours...','मेरे दिल से आपके दिल तक...','મારા દિલથી તમારા દિલ સુધી...'],
+['May this Diwali fill your life with','यह दिवाली आपके जीवन को भर दे','આ દિવાળી આપના જીવનને ભરી દે'],
+['✨ Happiness','✨ खुशियाँ','✨ ખુશીઓ'],
+['🪔 Light','🪔 रोशनी','🪔 પ્રકાશ'],
+['❤️ Love','❤️ प्रेम','❤️ પ્રેમ'],
+['🌟 Success','🌟 सफलता','🌟 સફળતા'],
+['🌸 Peace','🌸 शांति','🌸 શાંતિ'],
+['“May every diya you light bring a little more light into your life, every smile bring a little more happiness, and every moment bring memories worth keeping.”','“आपका जलाया हर दीया आपके जीवन में थोड़ी और रोशनी लाए, हर मुस्कान थोड़ी और खुशी लाए, और हर पल ऐसी यादें लाए जिन्हें सँजोकर रखा जा सके।”','“આપે પ્રગટાવેલો દરેક દીવો આપના જીવનમાં થોડો વધુ પ્રકાશ લાવે, દરેક સ્મિત થોડી વધુ ખુશી લાવે, અને દરેક પળ સાચવી રાખવા જેવી યાદો લાવે.”'],
+['Wishing you and your family a very Happy Diwali.','आपको और आपके परिवार को दिवाली की हार्दिक शुभकामनाएँ।','આપને અને આપના પરિવારને દિવાળીની હાર્દિક શુભેચ્છાઓ.'],
+['With warm wishes,','हार्दिक शुभकामनाओं सहित,','હાર્દિક શુભેચ્છાઓ સહ,'],
+['Meet Patel 🪔','मीत पटेल 🪔','મીત પટેલ 🪔'],
+['Make a Wish 🪔','मन्नत माँगें 🪔','મનોકામના માંગો 🪔'],
+['Make a Wish','मन्नत माँगें','મનોકામના માંગો'],
+['Write your name — your wish will rise into the sky as a glowing light, on its way to God. 🙏','अपना नाम लिखें — आपकी मन्नत रोशनी बनकर आसमान में ऊपर, भगवान तक जाएगी। 🙏','તમારું નામ લખો — તમારી મનોકામના પ્રકાશ બનીને આકાશમાં ઊંચે, ભગવાન સુધી જશે. 🙏'],
+['Send My Wish ✨','मेरी मन्नत भेजें ✨','મારી મનોકામના મોકલો ✨'],
+['Your name','आपका नाम','તમારું નામ'],
+['Your wish is on its way to God 🙏','आपकी मन्नत भगवान के पास जा रही है 🙏','તમારી મનોકામના ભગવાન પાસે જઈ રહી છે 🙏'],
+['May every wish you made with a pure heart come true.','सच्चे मन से माँगी हर मन्नत पूरी हो।','સાચા મનથી માંગેલી દરેક મનોકામના પૂર્ણ થાય.'],
+['This Diya Is For You','यह दीया आपके लिए है','આ દીવો આપના માટે છે'],
+['Because every celebration is brighter when shared.','क्योंकि हर उत्सव बाँटने से और रोशन होता है।','કારણ કે દરેક ઉજવણી વહેંચવાથી વધુ ઝળહળે છે.'],
+['👆 Tap the diya to light it','👆 दीया जलाने के लिए उस पर टैप करें','👆 દીવો પ્રગટાવવા તેના પર ટેપ કરો'],
+['May your life always shine brighter than this light.','आपका जीवन सदा इस रोशनी से भी ज़्यादा जगमगाए।','આપનું જીવન સદા આ પ્રકાશ કરતાં પણ વધુ ઝળહળતું રહે.'],
+['Grand Finale 🎇','भव्य समापन 🎇','ભવ્ય સમાપન 🎇'],
+['HAPPY DIWALI','शुभ दीपावली','શુભ દિવાળી'],
+['From Meet Patel 🪔','मीत पटेल की ओर से 🪔','મીત પટેલ તરફથી 🪔'],
+['Spread the light. Spread the happiness.','रोशनी फैलाएँ, खुशियाँ फैलाएँ।','પ્રકાશ ફેલાવો, ખુશીઓ ફેલાવો.'],
+['Replay 🪔','फिर से देखें 🪔','ફરી જુઓ 🪔'],
+['🎆 Tap anywhere on the sky to burst fireworks','🎆 आतिशबाज़ी के लिए आसमान में कहीं भी टैप करें','🎆 આતશબાજી માટે આકાશમાં ક્યાંય પણ ટેપ કરો']
+];
+const MAP={},N=[];
+const nk=s=>s.replace(/\uFE0F/g,'').trim();
+let lang='en';
+const LI=()=>lang==='hi'?1:lang==='gu'?2:0;
+const whoText=()=>uname?(lang==='gu'?uname+' માટે પ્રેમ સાથે 💛':lang==='hi'?uname+' के लिए प्यार के साथ 💛':'With love, for '+uname+' 💛'):'';
+function setLang(l){lang=l;document.documentElement.lang=l;const i=LI();N.forEach(([n,k])=>{n.nodeValue=MAP[k][i]});$('nm').placeholder=MAP['Your name'][i];$('who').textContent=whoText();document.querySelectorAll('#lang button').forEach(b=>b.classList.toggle('on',b.dataset.l===l))}
+TR.forEach(r=>{MAP[nk(r[0])]=[r[0],r[1],r[2]]});
+{const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;while(n=w.nextNode()){const k=nk(n.nodeValue);if(MAP[k])N.push([n,k])}}
+document.querySelectorAll('#lang button').forEach(b=>b.onclick=()=>setLang(b.dataset.l));
+addEventListener('resize',rs);rs();requestAnimationFrame(frame);setLang('en');
 })();
 </script></body></html>
