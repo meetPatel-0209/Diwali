@@ -39,6 +39,7 @@ p{font-size:clamp(19px,4.6vw,28px);line-height:1.5;max-width:640px;margin:10px 0
 #nm{font:500 22px 'Cormorant Garamond',serif;color:var(--ivory);background:rgba(6,40,46,.75);border:1px solid rgba(246,200,96,.6);border-radius:14px;padding:14px 18px;width:min(86vw,340px);text-align:center;outline:none;margin-top:12px;pointer-events:auto}
 #nm:focus{box-shadow:0 0 24px rgba(255,170,50,.5)}
 #nm::placeholder{color:rgba(255,244,220,.5)}
+@keyframes pl{0%,100%{opacity:.4}50%{opacity:1}}
 #p-fin p{margin:8px auto}.card p{font-size:clamp(17px,4.2vw,24px);margin:8px auto}.card h2{font-size:clamp(20px,5vw,34px)}
 #giftbtn{position:fixed;left:50%;top:50%;width:min(60vw,300px);height:min(60vw,300px);transform:translate(-50%,-50%);border-radius:50%;background:none;border:0;z-index:4;cursor:pointer;display:none}
 #giftbtn.on{display:block}
@@ -58,9 +59,9 @@ h1,h2{background:linear-gradient(180deg,#fff0c2,#f6c860 55%,#c98a2b);-webkit-bac
 <button class="b" id="snd" style="pointer-events:auto" aria-label="Toggle sound">🔊 Enable Sound</button>
 <button id="giftbtn" aria-label="Light this diya"></button>
 
-<div class="panel on low" id="p-intro" style="justify-content:flex-end;padding-bottom:12vh">
- <p class="sm">Something beautiful is about to light up...</p>
- <button class="b" id="light">Light the Diya 🪔</button>
+<div class="panel on" id="p-intro" style="justify-content:space-between;padding:14vh 24px 11vh">
+ <div><p class="sm" style="letter-spacing:.3em;text-transform:uppercase;font-size:14px;font-style:normal">A Diwali greeting from</p><h1>Meet Patel</h1></div>
+ <div><p class="sm">Something beautiful is about to light up...</p><button class="b" id="light">Light the Diya 🪔</button></div>
 </div>
 <div class="panel" id="p-lit">
  <h1 style="font-size:clamp(28px,7vw,60px)">A little light can make everything brighter.</h1>
@@ -93,6 +94,7 @@ h1,h2{background:linear-gradient(180deg,#fff0c2,#f6c860 55%,#c98a2b);-webkit-bac
 </div>
 <div class="panel" id="p-gift" style="justify-content:space-between;padding:12vh 24px 8vh">
  <div><h1 style="font-size:clamp(28px,7vw,56px)">This Diya Is For You</h1><p class="sm">Because every celebration is brighter when shared.</p></div>
+ <p id="ghint" style="position:absolute;left:0;right:0;bottom:15vh;font-size:clamp(18px,4.6vw,24px);color:var(--gold);letter-spacing:.06em;animation:pl 1.6s ease-in-out infinite">👆 Tap the diya to light it</p>
  <div id="gmsg" style="opacity:0;transition:opacity 1.5s"><h2>May your life always shine brighter than this light.</h2><button class="b" id="c4">Grand Finale 🎇</button></div>
 </div>
 <div class="panel" id="p-fin"><div class="card" style="text-align:center">
@@ -100,8 +102,8 @@ h1,h2{background:linear-gradient(180deg,#fff0c2,#f6c860 55%,#c98a2b);-webkit-bac
  <h2>From Meet Patel 🪔</h2>
  <h2 id="who" style="font-size:clamp(18px,4.5vw,28px)"></h2>
  <p>Spread the light. Spread the happiness.</p>
- <div><button class="b" id="share">Share ✨</button><button class="b" id="replay">Replay 🪔</button></div>
- <p class="sm" id="shmsg" style="min-height:1.4em">Share the Diwali Wishes</p>
+ <div><button class="b" id="replay">Replay 🪔</button></div>
+ 
 </div></div>
 
 <script>
@@ -211,14 +213,14 @@ function frame(ms){
  const t=ms/1000,dt=Math.min(.05,(ms-last)/1000||.016);last=ms;
  const pk=RM?.2:1;px=L(px,tx,.04);py=L(py,ty,.04);
  // targets
- const tb={intro:.0,lit:1,world:1,wish:.8,name:.7,gift:.35,finale:cl(ft/6,.12,1)}[stage];
+ const tb={intro:.14,lit:1,world:1,wish:.8,name:.7,gift:.35,finale:cl(ft/6,.12,1)}[stage];
  bright=L(bright,Math.max(tb,lit*(stage==='intro'||stage==='lit'?1:0)),.025);
  const B=bright;
  // sky
  const sk=g.createLinearGradient(0,0,0,H);sk.addColorStop(0,`rgb(${2+6*B},${10+22*B},${18+22*B})`);sk.addColorStop(.65,`rgb(${6+16*B},${34+70*B},${44+52*B})`);sk.addColorStop(1,`rgb(${30+130*B},${56+104*B},${54+36*B})`);
  g.fillStyle=sk;g.fillRect(0,0,W,H);
  // stars
- stars.forEach(s=>{const a=(.25+.55*B)*(.6+.4*Math.sin(t*(.6+s.d)+s.p));g.fillStyle=`rgba(255,240,210,${a*s.d})`;g.beginPath();g.arc(s.x*W-px*8*s.d*pk,s.y*H-py*5*s.d*pk,s.r*(1+B*.3),0,6.3);g.fill()});
+ stars.forEach(s=>{const a=(.45+.5*B)*(.6+.4*Math.sin(t*(.6+s.d)+s.p));g.fillStyle=`rgba(255,240,210,${a*s.d})`;g.beginPath();g.arc(s.x*W-px*8*s.d*pk,s.y*H-py*5*s.d*pk,s.r*(1+B*.3),0,6.3);g.fill()});
  // moon
  {const mx=W*.82-px*12*pk,my=H*.17;g.globalCompositeOperation='lighter';glow(mx,my,W*.14,.18*B+.05,'255,235,190');g.globalCompositeOperation='source-over';g.fillStyle=`rgba(255,245,215,${.35+.6*B})`;g.beginPath();g.arc(mx,my,Math.min(W,H)*.04,0,6.3);g.fill()}
  // fog
@@ -245,9 +247,10 @@ function frame(ms){
  }
  // intro diya
  if(!world){
-  const r=Math.min(W,H)*.14,cx=W/2,cy=H*.5;
+  const r=Math.min(W*.2,H*.15),cx=W/2,cy=H*.5;
   let f=0;
   if(igniteT>=0){igniteT+=dt;f=cl(igniteT/1.2);lit=cl(igniteT/2.5)}
+  g.globalCompositeOperation='lighter';glow(cx,cy-r*.2,r*4.2,.16*(1-f)+.05,'255,150,60');g.globalCompositeOperation='source-over';
   const w=diya(cx,cy,r,f,t,false);
   if(sparkT>=0&&igniteT<0){sparkT+=dt;const u=cl(sparkT/1.4),e=u*u*(3-2*u),sx=L(cx+r*3,w[0],e),sy=L(cy-r*3.5,w[1],e)+Math.sin(u*9)*8*(1-u);
    g.globalCompositeOperation='lighter';glow(sx,sy,18+8*Math.sin(t*40),.9,'255,210,120');
@@ -293,11 +296,11 @@ $('c3').onclick=()=>{stage='name';show('p-name')};
 $('nm').onkeydown=e=>{if(e.key==='Enter')$('c5').click()};
 $('c5').onclick=()=>{if(myL)return;uname=($('nm').value||'').trim().slice(0,18);myL={y:.72,t:0,n:uname||'Happy Diwali'};$('who').textContent=uname?'With love, for '+uname+' 💛':'';bell();[0,500,1000,1500].forEach((d,i)=>setTimeout(()=>launch(W*(.22+.19*i),H*R(.15,.35)),d));show('none');setTimeout(()=>{stage='gift';show('p-gift');$('giftbtn').classList.add('on')},4500)};
 const gb=$('giftbtn');
-gb.onclick=()=>{if(gl)return;gl=1;bell();for(let i=0;i<30;i++)sparks.push({x:W/2,y:H*.4,vx:R(-2,2),vy:R(-3,0),l:1,dk:.012,c:'#ffd27a'});$('gmsg').style.opacity=1;$('c4').style.pointerEvents='auto'};
+gb.onclick=()=>{if(gl)return;gl=1;$('ghint').style.display='none';bell();for(let i=0;i<30;i++)sparks.push({x:W/2,y:H*.4,vx:R(-2,2),vy:R(-3,0),l:1,dk:.012,c:'#ffd27a'});$('gmsg').style.opacity=1;$('c4').style.pointerEvents='auto'};
 gb.onpointerenter=()=>hov=true;gb.onpointerleave=()=>hov=false;
 $('c4').onclick=()=>{gb.classList.remove('on');wipe(()=>{stage='finale';ft=0;fin=false;myL=null;show('none');lants.forEach(l=>l.y=1.3)})};
-$('replay').onclick=()=>{ids.forEach(i=>$(i).classList.remove('on'));stage='intro';lit=0;sparkT=-1;igniteT=-1;bright=0;gl=0;giftLit=0;$('gmsg').style.opacity=0;$('c4').style.pointerEvents='';rockets=[];sparks=[];myL=null;$('nm').value='';$('who').textContent='';setTimeout(()=>show('p-intro'),600)};
-$('share').onclick=async()=>{const d={title:'Happy Diwali 🪔',text:'🪔 Happy Diwali! Sending you light, happiness and good wishes. — Meet Patel',url:location.href};
+$('replay').onclick=()=>{ids.forEach(i=>$(i).classList.remove('on'));stage='intro';lit=0;sparkT=-1;igniteT=-1;bright=0;gl=0;giftLit=0;$('gmsg').style.opacity=0;$('ghint').style.display='';$('c4').style.pointerEvents='';rockets=[];sparks=[];myL=null;$('nm').value='';$('who').textContent='';setTimeout(()=>show('p-intro'),600)};
+const shr=$('share');if(shr)shr.onclick=async()=>{const d={title:'Happy Diwali 🪔',text:'🪔 Happy Diwali! Sending you light, happiness and good wishes. — Meet Patel',url:location.href};
  try{if(navigator.share){await navigator.share(d);return}}catch(e){if(e&&e.name==='AbortError')return}
  try{await navigator.clipboard.writeText(location.href);$('shmsg').textContent='✨ Link copied!'}catch(e){const i=document.createElement('input');i.value=location.href;document.body.appendChild(i);i.select();try{document.execCommand('copy');$('shmsg').textContent='✨ Link copied!'}catch(_){$('shmsg').textContent=location.href}i.remove()}};
 addEventListener('resize',rs);rs();requestAnimationFrame(frame);
